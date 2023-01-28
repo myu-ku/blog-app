@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  frontend:
+    # ベースとするイメージ
+    image: node:lts-buster-slim
+    # コンテナ内のカレントディレクトリ
+    working_dir: /app
+    # ./srcとコンテナ内の/appを結びつける
+    volumes:
+     - ./src:/app
+    ports:
+      # 3030で入るとコンテナ内の3000に接続
+      - '3030:3000'
+    # コンテナ内の環境変数
+    environment:
+      # ホットリロードの設定
+      - WATCHPACK_POLLING=true
+    # コンテナ起動時に実行するコマンド
+    command: sh -c "npm install yarn &&
+                    yarn &&
+                    yarn dev"
+  swagger:
+    # https://hub.docker.com/r/swaggerapi/swagger-ui
+    image: swaggerapi/swagger-ui
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./src/api/openapi/openapi.yaml:/openapi.yaml
+    environment:
+      SWAGGER_JSON: /openapi.yaml
