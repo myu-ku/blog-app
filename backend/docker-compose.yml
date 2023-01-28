@@ -12,6 +12,10 @@ services:
       - public-data:/app/public
     depends_on:
       - db
+    networks:
+      - blog-app-network
+      - default
+    # apt-get updateはubuntuのパッケージリストの更新を行なっている（パッケージがリストに載っていないことがある）
     # puma.sockを配置するディレクトリを作成している
     command: sh -c "apt-get update -qq &&
                     apt-get install -y build-essential libpq-dev nodejs &&
@@ -32,6 +36,9 @@ services:
     # backend起動後にwebを起動させる設定（依存関係）
     depends_on:
       - backend
+    networks:
+      - blog-app-network
+      - default
   db:
     # :14.3つけないとエラー
     image: postgres:14.3
@@ -39,7 +46,13 @@ services:
       - ./src/.env
     volumes:
     - db-data:/var/lib/postgresql/data
+    networks:
+      - blog-app-network
+      - default
 volumes:
   db-data:
   sock-data:
   public-data:
+networks:
+  blog-app-network:
+    external: true

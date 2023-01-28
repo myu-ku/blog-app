@@ -7,3 +7,9 @@ services:
       context: ./nginx
     ports:
       - "80:80"
+    networks:
+      - blog-app-network
+      - default
+networks:
+  blog-app-network:
+    external: true

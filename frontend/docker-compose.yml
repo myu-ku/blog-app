@@ -20,6 +20,9 @@ services:
     command: sh -c "npm install yarn &&
                     yarn &&
                     yarn dev"
+    networks:
+      - blog-app-network
+      - default
   swagger:
     # https://hub.docker.com/r/swaggerapi/swagger-ui
     image: swaggerapi/swagger-ui
@@ -29,3 +32,6 @@ services:
       - ./src/api/openapi/openapi.yaml:/openapi.yaml
     environment:
       SWAGGER_JSON: /openapi.yaml
+networks:
+  blog-app-network:
+    external: true
