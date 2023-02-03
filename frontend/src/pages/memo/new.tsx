@@ -16,8 +16,8 @@ const NewMemo = () => {
     } catch(e) {
       console.log(e)
     }
-   
   }
+
   return (
     <>
       <h1>新規メモ作成</h1>
