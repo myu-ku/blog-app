@@ -3,12 +3,12 @@ version: '3.9'
 services:
   frontend:
     # ベースとするイメージ
-    image: node:lts-buster-slim
+    build: .
     # コンテナ内のカレントディレクトリ
-    working_dir: /app
-    # ./srcとコンテナ内の/appを結びつける
+    working_dir: /src
+    # ./srcとコンテナ内の/srcを結びつける
     volumes:
-     - ./src:/app
+     - ./src:/src
     ports:
       # 3030で入るとコンテナ内の3000に接続
       - '3030:3000'
@@ -17,9 +17,9 @@ services:
       # ホットリロードの設定
       - WATCHPACK_POLLING=true
     # コンテナ起動時に実行するコマンド
-    command: sh -c "npm install yarn &&
-                    yarn &&
-                    yarn dev"
+    # command: sh -c "npm install yarn &&
+    #                 yarn &&
+    #                 yarn dev"
     networks:
       - blog-app-network
       - default

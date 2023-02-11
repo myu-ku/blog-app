@@ -2,14 +2,14 @@ version: '3.9'
 
 services:
   backend:
-    image: ruby:3.1.2
-    working_dir: /app
+    build: .
+    working_dir: /src
     env_file:
       - ./src/.env
     volumes:
-      - ./src:/app
-      - sock-data:/app/tmp
-      - public-data:/app/public
+      - ./src:/src
+      - sock-data:/src/tmp
+      - public-data:/src/public
     depends_on:
       - db
     networks:
@@ -19,13 +19,13 @@ services:
     stdin_open: true
     # apt-get updateはubuntuのパッケージリストの更新を行なっている（パッケージがリストに載っていないことがある）
     # puma.sockを配置するディレクトリを作成している
-    command: sh -c "apt-get update -qq &&
-                    apt-get install -y build-essential libpq-dev nodejs &&
-                    rm -rf /var/lib/apt/lists/* &&
-                    mkdir -p tmp/sockets &&
-                    rm -f tmp/pids/server.pid &&
-                    bundle install &&
-                    bundle exec puma -C config/puma.rb"
+    # command: sh -c "apt-get update -qq &&
+    #                 apt-get install -y build-essential libpq-dev nodejs &&
+    #                 rm -rf /var/lib/apt/lists/* &&
+    #                 mkdir -p tmp/sockets &&
+    #                 rm -f tmp/pids/server.pid &&
+    #                 bundle install &&
+    #                 bundle exec puma -C config/puma.rb"
   web:
     build:
       # contextは読み込むDockerfileの場所を指定
